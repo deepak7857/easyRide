@@ -19,7 +19,7 @@ const captainSchema = new mongoose.Schema({
 type:String,
 required:true,
 unique:true,
-lower:true,
+ lowercase:true,
 match:[ /^\S+@\S+\.\S+$/, 'Please enter a valid email' ]
   },
   password:{
@@ -51,20 +51,25 @@ match:[ /^\S+@\S+\.\S+$/, 'Please enter a valid email' ]
       vehicleType:{
         type:String,
         required:true,
-        enum:['car','motorcycle','auto']
+        enum:['car','bike','auto','motorcycle']
       },
       location:{
-        itd:{
-          type:Number,
+        type:{
+          type:String,
+          enum:['Point'],
+          default:'Point',
         },
-        lng:{
-          type:Number,
+        coordinates:{
+          type:[Number],
+          default:[0,0],
         }
       }
     }
   }
 
 );
+
+captainSchema.index({ 'vehicle.location': '2dsphere' });
 
 
 captainSchema.methods.generateAuthToken = function() {
@@ -79,7 +84,5 @@ captainSchema.statics.hashPassword= async function(password){
   return await bcrypt.hash(password,10);
 }
 
-// const captainModel=mongoose.model("captain",captainSchema);
-// module.exports =captainModel
 const captainModel = mongoose.model('captain', captainSchema);
 module.exports = captainModel;

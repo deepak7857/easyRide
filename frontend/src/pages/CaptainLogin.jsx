@@ -2,7 +2,7 @@ import React, { useState,useContext } from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import axios from 'axios';
 import {CaptainDataContext} from '../context/CaptainContext'
-import UberLogo from '../assets/Uber_logo.png';
+
 
 const CaptainLogin=()=> {
 
@@ -23,7 +23,9 @@ const CaptainLogin=()=> {
           const data=response.data
           setCaptain(data.captain);
 
-          localStorage.setItem('token',data.token)
+          localStorage.setItem('captainToken',data.token)
+          const token = localStorage.getItem("captainToken");
+          console.log(captain,"captain data after login",token);
           navigate('/captain/home')
         }
         if (response.status === 401) {
@@ -43,7 +45,7 @@ const CaptainLogin=()=> {
   return( 
   <div className='p-7 h-screen flex flex-col justify-between'>
   <div>
-  <img className='w-20 mb-5' src={UberLogo} alt="" />
+  <div className='text-[20px] font-semibold w-16 ml-6 m-2 text-black '>EasyDrive</div>
   <form onSubmit={(e)=>{
     
     handleSubmit(e);

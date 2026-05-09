@@ -2,7 +2,6 @@ import React,{useState,useContext} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { CaptainDataContext } from '../context/CaptainContext'
-import UberLogo from '../assets/Uber_logo.png';
 
 const CaptainSignup=()=> {
   const [ email, setEmail ] = useState('')
@@ -25,6 +24,7 @@ const CaptainSignup=()=> {
         firstName: firstName,
         lastName: lastName
       },
+      
       email: email,
       password: password,
       vehicle: {
@@ -34,14 +34,16 @@ const CaptainSignup=()=> {
         vehicleType: vehicleType
       }
     }
+    console.log(captainData,email,password);
 
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/captain/register`, captainData)
+    console.log(response);
     console.log(response);
 
     if (response.status === 201) {
       const data = response.data
       setCaptain(data.captain)
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('captainToken', data.token)
       navigate('/captain/home')
     }
 
@@ -58,7 +60,7 @@ const CaptainSignup=()=> {
    return (
     <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
-        <img className='w-20 mb-3' src={UberLogo} alt="" />
+      <div className='text-[20px] font-semibold w-16 ml-6 m-2 text-black '>EasyDrive</div>
 
         <form onSubmit={(e) => {
           handleSubmit(e)
@@ -159,7 +161,7 @@ const CaptainSignup=()=> {
               <option value="" disabled>Select Vehicle Type</option>
               <option value="car">Car</option>
               <option value="auto">Auto</option>
-              <option value="moto">Moto</option>
+              <option value="motorcycle">Motorcycle</option>
             </select>
           </div>
 

@@ -8,14 +8,14 @@ const VehiclePanel = (props) => {
        <h5 onClick={()=>{
           props.setVehiclePanelOpen(false)
          }}
-        
-        
         className="p-1 text-center top-0 absolute w-full "><i className="p-10 text-3xl ri-arrow-down-wide-line"></i></h5>
         <h3 className="text-2xl font-semibold mb-5">Choose a Vehicle</h3>
            {/* car */}
         <div 
         onClick={()=>{
+          props.setVehiclePanelOpen(false)
           props.setConformRidePanel(true)
+           props.selectVehicleType("car"); 
          }}
         
         
@@ -24,7 +24,7 @@ const VehiclePanel = (props) => {
 
           <div className=" w-1/2">
             <h4 className="font-medium text-lg ">
-              UberGo
+              EASYGO
               <span>
                 <i className="ri-user-3-fill"></i>4
               </span>
@@ -34,20 +34,21 @@ const VehiclePanel = (props) => {
               Affordable, compact rides
             </p>
           </div>
-          <h2 className="text-2xl font-semibold">₹220</h2>
+          <h2 className="text-2xl font-semibold">₹{props.fare.car}</h2>
         </div>
         {/* bike */}
         <div
          onClick={()=>{
+          props.setVehiclePanelOpen(false)
           props.setConformRidePanel(true)
+          props.selectVehicleType("bike");
          }}
          className="flex border-2 mb-2 active:border-black rounded-xl items-center w-full p-3  justify-between">
           <img className="h-10" src={motologo} alt="moto_logo" />
 
           <div className="  w-1/2">
             <h4 className="font-medium text-lg ">
-              UberGo
-              <span>
+EASYGO              <span>
                 <i className="ri-user-3-fill"></i>1
               </span>
             </h4>
@@ -56,13 +57,15 @@ const VehiclePanel = (props) => {
               Affordable, compact rides
             </p>
           </div>
-          <h2 className="text-2xl font-semibold">₹50</h2>
+          <h2 className="text-2xl font-semibold">₹{props.fare.bike}</h2>
         </div>
           {/* auto */}
 
         <div 
         onClick={()=>{
+          props.setVehiclePanelOpen(false)
           props.setConformRidePanel(true)
+          props.selectVehicleType("auto");
          }}
         
         
@@ -71,7 +74,7 @@ const VehiclePanel = (props) => {
 
           <div className=" w-1/2">
             <h4 className="font-medium text-lg ">
-              UberGo
+              EASYGO
               <span>
                 <i className="ri-user-3-fill"></i>3
               </span>
@@ -81,7 +84,7 @@ const VehiclePanel = (props) => {
               Affordable, compact rides
             </p>
           </div>
-          <h2 className="text-2xl font-semibold">₹120</h2>
+          <h2 className="text-2xl font-semibold">₹{props.fare.auto}</h2>
         </div>
 
     </div>

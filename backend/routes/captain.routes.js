@@ -16,11 +16,11 @@ router.post(
     body('vehicle.vehicleType').isIn([ 'car', 'motorcycle', 'auto','cab']).withMessage('Invalid vehicle type')
   ],
   captainController.captainRegister)
-  router.post(
+router.post(
     "/login",[
       body("email").isEmail().withMessage("Invalid email "),
     body("password").isLength({min:6}).withMessage("Invalid password")
     ],captainController.loginCaptain)
-    router.get("/profile",authMiddleware.authCaptain,captainController.getCaptainProfile);
-    router.get("/logout",authMiddleware.authCaptain, captainController.logoutCaptain);
+router.get("/profile",authMiddleware.authCaptain,captainController.getCaptainProfile);
+router.get("/logout",authMiddleware.authCaptain, captainController.logoutCaptain);
     module.exports = router;

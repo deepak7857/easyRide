@@ -1,7 +1,7 @@
 const captainModel=require("../model/captain.model")
 const blackListTokenModel=require("../model/blacklistToken.model")
 const captainService=require("../services/captain.service")
-const { validationResult } = require('express-validator');
+const {validationResult} = require('express-validator');
 
 module.exports.captainRegister=async(req,res,next)=>{
 const errors=validationResult(req);
@@ -10,8 +10,9 @@ if(!errors.isEmpty()){
 }
 try {
 const {fullName:{firstName,lastName},email,password,vehicle:{color, plate, capacity, vehicleType}}=req.body;
-
-const isCaptainAlreadyExist = await captainModel.findOne({ email });
+const normalizedEmail = String(email).trim().toLowerCase();
+console.log(req.body);
+const isCaptainAlreadyExist = await captainModel.findOne({ email: normalizedEmail });
 if (isCaptainAlreadyExist) {
   return res.status(400).json({ message: "Captain already exist" });
 }
@@ -19,20 +20,15 @@ const hashedPassword = await captainModel.hashPassword(password);
 const captain = await captainService.createCaptain({
   firstName,
   lastName,
-  email,
+  email: normalizedEmail,
   password: hashedPassword,
   color:color,
   plate: plate,
   capacity: capacity,
   vehicleType:vehicleType
 });
-
-
 const token = captain.generateAuthToken();
-
-
     res.status(201).json({ token, captain });
-
 } catch (error) {
   console.error(error);
    res.status(409).json({ message: "duplicate data ", error: error.message });
@@ -58,14 +54,11 @@ module.exports.loginCaptain=async (req,res,next)=>{
      }
       const token=captain.generateAuthToken();
       res.cookie('token', token);
-
       res.status(200).json({ token, captain });
 }
 catch (error) {
   console.error(error);
   return res.status(500).json({ message: "Internal server error", error: error.message });
-
-
 }
 }
 module.exports.getCaptainProfile=async (req,res,next)=>{
@@ -73,20 +66,15 @@ module.exports.getCaptainProfile=async (req,res,next)=>{
   if(!errors.isEmpty()){
     return res.status(400).json({errors:errors.array()});
   }
-  
  return res.status(201).json({
   message: "Profile retrieved successfully",captain:req.captain});
-
-
 }
 module.exports.logoutCaptain = async (req, res, next) => {
   try {
-      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
-      
+      const token = req.cookies.token || req.headers.authorization?.split(" ")[1];   
       if (!token) {
           return res.status(400).json({ message: "No token found" });
       }
-
       // Check if token already exists in blacklist
       const existingToken = await blackListTokenModel.findOne({ token });
       if (!existingToken) {

@@ -1,39 +1,45 @@
-import React,{useContext , useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CaptainDataContext } from '../context/CaptainContext';
 import axios from 'axios';
 
 const CaptainProtectWrapper = ({ children }) => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("captainToken") || localStorage.getItem("token");
+  console.log("Token in CaptainProtectWrapper:", token);
+  const {captain, setCaptain} = useContext(CaptainDataContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const token=localStorage.getItem('token');
-  const navigate =useNavigate()
   useEffect(() => {
-    if(!token){
-      navigate('/captain/login')
+    if (!token) {
+      navigate('/captain/login');
+      return; // stop further execution
     }
+
     axios.get(`${import.meta.env.VITE_API_URL}/captain/profile`, {
       headers: {
-          Authorization: `Bearer ${token}`
-      }
-  }).then(response => {
-      if (response.status === 200) {
-          setCaptain(response.data.captain)
-          setIsLoading(false)
-      }
-  })
-      .catch(err => {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      console.log("Auth response:", res);
+      setCaptain(res.data.captain);
+      setIsLoading(false);
+    })
+    .catch((err) => {
+      console.error("Auth error:", err);
+      setIsLoading(false);
+      localStorage.removeItem("captainToken");
+      localStorage.removeItem("token");
+      navigate('/captain/login');
+    });
+  }, [token, navigate, setCaptain]);
 
-          localStorage.removeItem('token')
-          navigate('/captain/login')
-      })
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  }),[token,navigate]
+  return <div>{children}</div>;
+};
 
-
-  return (
-   <>
-   {children}
-   </>
-  )
-}
-
-export default CaptainProtectWrapper
+export default CaptainProtectWrapper;

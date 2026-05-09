@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { UserDataContext } from '../context/userContext';
-import UberLogo from '../assets/Uber_logo.png';
+
 
 
 const UserSignup = () => {
@@ -14,13 +14,19 @@ const UserSignup = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+
+
+
+
   const navigate = useNavigate();
   const { setUser } = useContext(UserDataContext);
 
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
-    setIsLoading(true); // Set loading state
+    setError(''); 
+    setIsLoading(true); 
 
     const newUserData = {
       fullName: {
@@ -37,7 +43,7 @@ const UserSignup = () => {
       if (response.status === 201) {
         const data = response.data;
         setUser(data.user);
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('userToken', data.token)
         navigate('/user/home');
       }
     } catch (err) {
@@ -56,7 +62,7 @@ const UserSignup = () => {
     <div>
       <div className="p-7 h-screen flex flex-col justify-between">
         <div>
-          <img className="w-16 mb-10" src={UberLogo} alt="Uber Logo" />
+        <div className='text-[20px] font-semibold w-16 ml-6 m-2 text-black '>EasyDrive</div>
 
           <form onSubmit={handleSubmit}>
             <h3 className="text-lg w-1/2 font-medium mb-2">What's your name</h3>

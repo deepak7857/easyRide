@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import { UserDataContext } from '../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import UberLogo from '../assets/Uber_logo.png';
+
 
 
 const UserLogin=  ()=> {
@@ -24,7 +24,7 @@ const UserLogin=  ()=> {
     if (response.status === 200) {
       const data = response.data
       setUser(data.user)
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('userToken', data.token)
       navigate('/user/home')
     }
     if (response.status === 401) {
@@ -45,7 +45,7 @@ const UserLogin=  ()=> {
   return (
     <div className='p-7 h-screen flex flex-col justify-between'>
       <div>
-      <img className='w-16  left-5 top-5 mb-5' src={UberLogo} alt="" />
+      <div className='text-[20px] font-semibold w-16 ml-6 m-2 text-black '>EasyDrive</div>
       <form onSubmit={(e)=>{
         
         handleSubmit(e);

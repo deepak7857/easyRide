@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -6,16 +6,18 @@ import { useNavigate } from 'react-router-dom'
 
    const token = localStorage.getItem('token');
    const navigate = useNavigate();
-   axios.get(`${import.meta.env.VITE_API_URL}/captain/logout`, {
-    headers: {
-        Authorization: `Bearer ${token}`
-    }
-}).then((response) => {
-    if (response.status === 200) {
-        localStorage.removeItem('captain-token')
-        navigate('/captain/login')
-    }
-})
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URL}/captain/logout`, {
+      headers: {
+          Authorization: `Bearer ${token}`
+      }
+    }).then((response) => {
+      if (response.status === 200) {
+          localStorage.removeItem('token')
+          navigate('/captain/login')
+      }
+    })
+  }, [navigate, token])
 
 
 

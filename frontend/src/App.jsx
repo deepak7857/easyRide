@@ -25,12 +25,17 @@ function App() {
         <Route path="captain/signup" element={<CaptainSignup />} />
         <Route path="captain/login" element={<CaptainLogin />} />
         <Route path="/user/home"element={<UserProtectWrapper><UserHome/></UserProtectWrapper>}/>
-        <Route path="/captain/home"element={<CaptainProtectWrapper><CaptainHome/></CaptainProtectWrapper>}/>
+
+        
+        <Route path="/captain/home"element={         
+           <CaptainProtectWrapper>
+          <CaptainHome/>
+           </CaptainProtectWrapper>
+        }/>
         <Route path="/user/logout"element={ <UserProtectWrapper><UserLogout/></UserProtectWrapper>}/>
         <Route path="/captain/logout"element={<CaptainProtectWrapper><CaptainLogout/></CaptainProtectWrapper>}/>
         <Route path="/user/riding"element={<UserRiding/>}/>
         <Route path="/captain/riding"element={<CaptainRiding/>}/>
-
       </Routes>
 
     </div>
